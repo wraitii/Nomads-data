@@ -1,7 +1,38 @@
-[gd_resource type="SpatialMaterial" load_steps=2 format=2]
+[gd_resource type="ShaderMaterial" load_steps=5 format=2]
 
 [ext_resource path="res://data/textures/ground/red_earth_01_2048x2048.png" type="Texture" id=1]
 
+[sub_resource type="Shader" id=1]
+code = "shader_type spatial;
+render_mode blend_mix, unshaded;
+
+uniform sampler2D texture_albedo : hint_albedo;
+uniform sampler2D texture_curve;
+
+varying vec4 instance;
+
+void vertex() {
+	MODELVIEW_MATRIX = INV_CAMERA_MATRIX * mat4(CAMERA_MATRIX[0],CAMERA_MATRIX[1],CAMERA_MATRIX[2],WORLD_MATRIX[3]);
+	
+	instance = INSTANCE_CUSTOM;
+}
+
+void fragment() {
+	vec2 base_uv = UV;
+	vec4 albedo_tex = texture(texture_albedo,base_uv);
+	ALBEDO = albedo_tex.rgb * 0.7;
+	float alph = texture(texture_curve, instance.gg).r;
+	ALPHA = clamp(2.0 * alph * albedo_tex.r * ((0.2 + alph/4.0) - distance(vec2(0.5), base_uv)), 0.0, 1.0);
+}
+"
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0, 0 ), 0.0, 3.82705, 0, 0, Vector2( 0.497076, 0.994358 ), 0.0, 0.0, 0, 0, Vector2( 0.997076, 0 ), -4.48282, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=3]
+curve = SubResource( 2 )
+
 [resource]
-params_billboard_mode = 1
-albedo_texture = ExtResource( 1 )
+shader = SubResource( 1 )
+shader_param/texture_albedo = ExtResource( 1 )
+shader_param/texture_curve = SubResource( 3 )
