@@ -1,0 +1,7 @@
+[gd_resource type="SpatialMaterial" load_steps=2 format=2]
+
+[ext_resource path="res://data/textures/ground/red_earth_01_2048x2048.png" type="Texture" id=1]
+
+[resource]
+params_billboard_mode = 1
+albedo_texture = ExtResource( 1 )
