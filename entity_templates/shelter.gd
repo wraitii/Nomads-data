@@ -2,7 +2,11 @@ extends EntityDef
 
 const interfaces = {
 	"Body": {
-		"scene": "Shelter"
+		"actor": "Shelter",
+		"physics": "Shelter",
+	},
+	"ConstructionSite": {
+		
 	},
 	"Aura": {
 		"areas": [
