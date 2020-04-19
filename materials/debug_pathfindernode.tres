@@ -1,0 +1,20 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=2]
+
+[sub_resource type="Shader" id=3]
+code = "shader_type spatial;
+render_mode unshaded, depth_test_disable;
+
+uniform sampler2D tex;
+
+void fragment()
+{
+	ALBEDO = texture(tex, UV).rgb;
+}"
+
+[sub_resource type="ViewportTexture" id=4]
+viewport_path = NodePath("PathfinderGrid")
+
+[resource]
+resource_local_to_scene = true
+shader = SubResource( 3 )
+shader_param/tex = SubResource( 4 )
